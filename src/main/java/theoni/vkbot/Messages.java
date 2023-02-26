@@ -5,7 +5,7 @@ import lombok.Getter;
 public enum Messages {
     START("Введите Rcon или используйте кнопку ниже."),
     RCON("Введите команду для отправки на сервер."),
-    RCON_WITH_COMMANDS("Ведите команду для отправки на сервер.\n\nБыстрые команды:"),
+    RCON_WITH_COMMANDS("Введите команду для отправки на сервер.\n\nБыстрые команды:"),
     COMMAND_BLOCKED("Данная команда заблокирована.");
 
     @Getter private String text;
