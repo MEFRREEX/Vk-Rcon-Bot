@@ -8,9 +8,9 @@ A simple Rcon Bot for VK
 
 
 ## Build JAR file
-- git clone https://github.com/MEFRREEX/Vk-Rcon-Bot.git
-- cd Vk-Rcon-Bot
-- mvn clean package
+- `git clone https://github.com/MEFRREEX/Vk-Rcon-Bot.git`
+- `cd Vk-Rcon-Bot`
+- `mvn clean package`
 
 ## Run
-java -jar vkbot-1.0.jar
+`java -jar vkbot-1.0.jar`
