@@ -1,0 +1,20 @@
+groupId: 123 # ID группы вк
+token: "" # Токен группы ВК
+
+rcon:
+  host: "localhost" # Адрес RCON
+  port: 19132 # Порт RCON
+  password: "5YzNmYjUyM" # Пароль RCON
+
+allowed-users:
+  - 1 # Цифровые ID
+
+# Быстрые команды, будут отображатся при вводе Rcon
+fast-commands:
+  - "ver"
+  - "status"
+  - "stop"
+
+# Заблокированные команды
+blocked-commands:
+  - "stop"
