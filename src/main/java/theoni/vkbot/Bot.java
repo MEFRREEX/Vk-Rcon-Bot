@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 public class Bot {
 
     public static void main(String[] args) throws InterruptedException {
+
         Path currentPath = Paths.get("").toAbsolutePath();
         String configPath = "/config.yml";
         File file = new File(currentPath.toString(), "config.yml");
@@ -36,5 +37,6 @@ public class Bot {
         }
 
         new BotHandler().startBot();
+        System.out.println(Messages.BOT_STARTED.getText());
     }
 }

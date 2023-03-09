@@ -8,8 +8,8 @@ import com.vk.api.sdk.queries.messages.MessagesGetLongPollHistoryQuery;
 
 import theoni.vkbot.managers.BotManager;
 import theoni.vkbot.managers.ConfigManager;
+import theoni.vkbot.managers.RconManager;
 import theoni.vkbot.utils.Keyboards;
-import theoni.vkbot.utils.Rcon;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,29 +44,56 @@ public class BotHandler {
                         if (!messages.isEmpty()){
                             messages.forEach(message -> {
                                 
-                                String text = message.getText().replace("/", "");
+                                String text = message.getText().toLowerCase();
 
                                 if (text.equalsIgnoreCase("Начать")){
                                     manager.sendMessage(Messages.START.getText(), message, Keyboards.rconKeyboard());
                                 }
 
+                                else if (text.equalsIgnoreCase("/getid")) {
+                                    manager.sendMessage(String.format(Messages.USER_ID.getText(), message.getFromId()), message);
+                                }
+
                                 else if (text.equalsIgnoreCase("Rcon")){
                                     if (config.getList("allowed-users").contains(message.getFromId())) {
-                                        if (config.getList("fast-commands").size() != 0) {
-                                            manager.sendMessage(Messages.RCON_WITH_COMMANDS.getText(), message, Keyboards.commandsKeyboard());
+                                        if (!rconUsers.contains(message.getFromId())) {
+                                            if (config.getList("fast-commands").size() != 0) {
+                                                manager.sendMessage(Messages.RCON_WITH_COMMANDS.getText(), message, Keyboards.commandsKeyboard());
+                                            } else {
+                                                manager.sendMessage(Messages.RCON.getText(), message, Keyboards.commandsKeyboard());
+                                            }
+                                            rconUsers.add(message.getFromId());
                                         } else {
-                                            manager.sendMessage(Messages.RCON.getText(), message, Keyboards.commandsKeyboard());
+                                            rconUsers.remove(message.getFromId());
                                         }
-                                        rconUsers.add(message.getFromId());
+                                    } else {
+                                        manager.sendMessage(Messages.USER_NOT_WHITELISTED.getText(), message);
                                     }
                                 }
 
                                 else if (rconUsers.contains(message.getFromId())) {
-                                    if (config.getList("blocked-commands").contains(text)) {
-                                        manager.sendMessage(Messages.COMMAND_BLOCKED.getText(), message);
+                                    
+                                    String commandPrefix = config.getString("command-prefix");
+
+                                    if (config.getList("blocked-commands").contains(text.replace("/", "").replace(commandPrefix, ""))) {
+                                        manager.sendMessage(String.format(Messages.COMMAND_BLOCKED.getText(), text), message);
                                         return;
                                     }
-                                    manager.sendMessage("Команда отправлена.\nОтвет сервера: " + Rcon.command(text), message);
+                                    
+
+                                    if (text.substring(0, 1).equals(commandPrefix) || commandPrefix.equals("")) {
+
+                                        String response = RconManager.command(text.replace("/", "").replace(commandPrefix, ""));
+                                        if (response.equals("Connection error")) {
+                                            response = Messages.FAILED_TO_CONNECT.getText();
+                                        } else if (response.equals("Authentication error")) {
+                                            response = Messages.FAILED_TO_AUTHENTICATE.getText();
+                                        } else {
+                                            response = String.format(Messages.COMMAND_SENDED.getText(), response.replaceAll("§", ""));
+                                        }
+
+                                        manager.sendMessage(response, message);
+                                    }
                                 }
                             });
                         }

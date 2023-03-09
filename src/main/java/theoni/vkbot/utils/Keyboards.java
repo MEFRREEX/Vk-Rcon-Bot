@@ -42,7 +42,7 @@ public class Keyboards {
                 new KeyboardButton()
                     .setColor(KeyboardButtonColor.POSITIVE)
                     .setAction(new KeyboardButtonAction()
-                    .setLabel("/" + command)
+                    .setLabel((config.getString("command-prefix").equals("") ? "/" : config.getString("command-prefix")) + command)
                     .setType(TemplateActionTypeNames.TEXT))
             );
         }
