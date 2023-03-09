@@ -23,7 +23,7 @@ public class BotManager {
 
     public void sendMessage(String text, Message message, Keyboard keyboard) {
         try {
-            vk.messages().send(actor).message(text).userId(message.getFromId()).randomId(random.nextInt(10000)).keyboard(keyboard).execute();
+            vk.messages().send(actor).message(text).peerId(message.getPeerId()).randomId(random.nextInt(10000)).keyboard(keyboard).execute();
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
@@ -31,7 +31,7 @@ public class BotManager {
 
     public void sendMessage(String text, Message message) {
         try {
-            vk.messages().send(actor).message(text).userId(message.getFromId()).randomId(random.nextInt(10000)).execute();
+            vk.messages().send(actor).message(text).peerId(message.getPeerId()).randomId(random.nextInt(10000)).execute();
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class BotManager {
 
     public void sendMessage(String text, Integer id, Keyboard keyboard) {
         try {
-            vk.messages().send(actor).message(text).userId(id).randomId(random.nextInt(10000)).keyboard(keyboard).execute();
+            vk.messages().send(actor).message(text).peerId(id).randomId(random.nextInt(10000)).keyboard(keyboard).execute();
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class BotManager {
 
     public void sendMessage(String text, Integer id) {
         try {
-            vk.messages().send(actor).message(text).userId(id).randomId(random.nextInt(10000)).execute();
+            vk.messages().send(actor).message(text).peerId(id).randomId(random.nextInt(10000)).execute();
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
@@ -64,7 +64,7 @@ public class BotManager {
     }
 
     public MessagesGetLongPollHistoryQuery getHistoryQuery(Integer ts) {
-        MessagesGetLongPollHistoryQuery historyQuery =  vk.messages().getLongPollHistory(actor).ts(ts);
+        MessagesGetLongPollHistoryQuery historyQuery = vk.messages().getLongPollHistory(actor).ts(ts);
         return historyQuery;
     }
     
