@@ -63,7 +63,7 @@ public class BotManager {
     public void sendMessage(String text, Integer id) {
         try {
             int length = text.length();
-            int max = 400;
+            int max = 4000;
             for (int i = 0; i < length; i += max) {
                 int endIndex = Math.min(i + max, length);
                 vk.messages().send(actor).message(text.substring(i, endIndex)).peerId(id).randomId(random.nextInt(10000)).execute();
