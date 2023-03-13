@@ -23,7 +23,12 @@ public class BotManager {
 
     public void sendMessage(String text, Message message, Keyboard keyboard) {
         try {
-            vk.messages().send(actor).message(text).peerId(message.getPeerId()).randomId(random.nextInt(10000)).keyboard(keyboard).execute();
+            int length = text.length();
+            int max = 4000;
+            for (int i = 0; i < length; i += max) {
+                int endIndex = Math.min(i + max, length);
+                vk.messages().send(actor).message(text.substring(i, endIndex)).peerId(message.getPeerId()).randomId(random.nextInt(10000)).keyboard(keyboard).execute();
+            }
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
@@ -31,7 +36,12 @@ public class BotManager {
 
     public void sendMessage(String text, Message message) {
         try {
-            vk.messages().send(actor).message(text).peerId(message.getPeerId()).randomId(random.nextInt(10000)).execute();
+            int length = text.length();
+            int max = 4000;
+            for (int i = 0; i < length; i += max) {
+                int endIndex = Math.min(i + max, length);
+                vk.messages().send(actor).message(text.substring(i, endIndex)).peerId(message.getPeerId()).randomId(random.nextInt(10000)).execute();
+            }
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
@@ -39,7 +49,12 @@ public class BotManager {
 
     public void sendMessage(String text, Integer id, Keyboard keyboard) {
         try {
-            vk.messages().send(actor).message(text).peerId(id).randomId(random.nextInt(10000)).keyboard(keyboard).execute();
+            int length = text.length();
+            int max = 4000;
+            for (int i = 0; i < length; i += max) {
+                int endIndex = Math.min(i + max, length);
+                vk.messages().send(actor).message(text.substring(i, endIndex)).peerId(id).randomId(random.nextInt(10000)).keyboard(keyboard).execute();
+            }
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
@@ -47,7 +62,12 @@ public class BotManager {
 
     public void sendMessage(String text, Integer id) {
         try {
-            vk.messages().send(actor).message(text).peerId(id).randomId(random.nextInt(10000)).execute();
+            int length = text.length();
+            int max = 400;
+            for (int i = 0; i < length; i += max) {
+                int endIndex = Math.min(i + max, length);
+                vk.messages().send(actor).message(text.substring(i, endIndex)).peerId(id).randomId(random.nextInt(10000)).execute();
+            }
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }

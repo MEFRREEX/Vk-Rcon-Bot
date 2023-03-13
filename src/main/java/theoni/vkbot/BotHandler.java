@@ -12,16 +12,16 @@ import theoni.vkbot.managers.RconManager;
 import theoni.vkbot.utils.Keyboards;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BotHandler {  
 
     private ConfigManager config;
-    private List<Integer> rconUsers = new ArrayList<>();
+    private String commandPrefix;
 
     public BotHandler() {
         this.config = new ConfigManager(new File("config.yml"));
+        this.commandPrefix = config.getString("command-prefix");
     }
 
     public void startBot() {
@@ -46,52 +46,50 @@ public class BotHandler {
                                 
                                 String text = message.getText().toLowerCase();
 
-                                if (text.equalsIgnoreCase("Начать")){
+                                if (text.equals("Начать")){
                                     manager.sendMessage(Messages.START.getText(), message, Keyboards.rconKeyboard());
                                 }
 
-                                else if (text.equalsIgnoreCase("/getid")) {
+                                else if (text.equals("/getid")) {
                                     manager.sendMessage(String.format(Messages.USER_ID.getText(), message.getFromId()), message);
                                 }
 
-                                else if (text.equalsIgnoreCase("Rcon")){
+                                else if (text.equals("Rcon")){
                                     if (config.getList("allowed-users").contains(message.getFromId())) {
-                                        if (!rconUsers.contains(message.getFromId())) {
-                                            if (config.getList("fast-commands").size() != 0) {
-                                                manager.sendMessage(Messages.RCON_WITH_COMMANDS.getText(), message, Keyboards.commandsKeyboard());
-                                            } else {
-                                                manager.sendMessage(Messages.RCON.getText(), message, Keyboards.commandsKeyboard());
-                                            }
-                                            rconUsers.add(message.getFromId());
+                                        if (config.getList("fast-commands").size() != 0) {
+                                            manager.sendMessage(Messages.RCON_WITH_COMMANDS.getText(), message, Keyboards.commandsKeyboard());
                                         } else {
-                                            rconUsers.remove(message.getFromId());
+                                            manager.sendMessage(Messages.RCON.getText(), message, Keyboards.commandsKeyboard());
                                         }
                                     } else {
                                         manager.sendMessage(Messages.USER_NOT_WHITELISTED.getText(), message);
                                     }
                                 }
 
-                                else if (rconUsers.contains(message.getFromId())) {
-                                    
-                                    String commandPrefix = config.getString("command-prefix");
+                                else if (text.length() > 1) {
+                                    if (text.substring(0, 1).equals(config.getString("command-prefix")) || config.getString("command-prefix").equals("")) {
 
-                                    if (config.getList("blocked-commands").contains(text.replace("/", "").replace(commandPrefix, ""))) {
-                                        manager.sendMessage(String.format(Messages.COMMAND_BLOCKED.getText(), text), message);
-                                        return;
-                                    }
-                                    
-
-                                    if (text.substring(0, 1).equals(commandPrefix) || commandPrefix.equals("")) {
-
+                                        if (!config.getList("allowed-users").contains(message.getFromId())) {
+                                            manager.sendMessage(Messages.USER_NOT_WHITELISTED.getText(), message);
+                                            return;
+                                        }
+    
+                                        if (config.getList("blocked-commands").contains(text.replace("/", "").replace(commandPrefix, ""))) {
+                                            manager.sendMessage(String.format(Messages.COMMAND_BLOCKED.getText(), text), message);
+                                            return;
+                                        }
+    
                                         String response = RconManager.command(text.replace("/", "").replace(commandPrefix, ""));
                                         if (response.equals("Connection error")) {
                                             response = Messages.FAILED_TO_CONNECT.getText();
                                         } else if (response.equals("Authentication error")) {
                                             response = Messages.FAILED_TO_AUTHENTICATE.getText();
+                                        } else if (response.equals("")) {
+                                                response = Messages.RESPONSE_NULL.getText();
                                         } else {
                                             response = String.format(Messages.COMMAND_SENDED.getText(), response.replaceAll("§", ""));
                                         }
-
+    
                                         manager.sendMessage(response, message);
                                     }
                                 }

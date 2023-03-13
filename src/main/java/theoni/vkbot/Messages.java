@@ -1,24 +1,32 @@
 package theoni.vkbot;
 
+import java.io.File;
+
 import lombok.Getter;
+import theoni.vkbot.managers.ConfigManager;
 
 public enum Messages {
 
     BOT_STARTED("Бот успешно запущен."),
-    START("Введите Rcon или используйте кнопку ниже."),
-    USER_ID("Ваш ID: %s"),
-    RCON("Введите команду для отправки на сервер."),
-    RCON_WITH_COMMANDS("Введите команду для отправки на сервер.\n\nБыстрые команды:"),
-    USER_NOT_WHITELISTED("Вас нет в списке пользователей, которые могут использовать RCON."),
-    COMMAND_BLOCKED("Данная команда заблокирована."),
-    FAILED_TO_CONNECT("Не удалось подключится к серверу. Возможно он оффлайн."),
-    FAILED_TO_AUTHENTICATE("Не удалось пройти аутентификацию RCON."),
-    COMMAND_SENDED("Команда отправлена.\nОтвет сервера: %s");
+    START(),
+    USER_ID(),
+    RCON(),
+    RCON_WITH_COMMANDS(),
+    USER_NOT_WHITELISTED(),
+    COMMAND_BLOCKED(),
+    FAILED_TO_CONNECT(),
+    FAILED_TO_AUTHENTICATE(),
+    COMMAND_SENDED(),
+    RESPONSE_NULL();
 
     @Getter private String text;
 
     Messages(String text) {
         this.text = text;
+    }
+
+    Messages() {
+        this.text = new ConfigManager(new File("messages.yml")).getString(name());
     }
 
 }
