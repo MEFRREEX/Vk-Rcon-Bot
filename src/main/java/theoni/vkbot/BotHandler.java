@@ -54,7 +54,7 @@ public class BotHandler {
                                     manager.sendMessage(String.format(Messages.USER_ID.getText(), message.getFromId()), message);
                                 }
 
-                                else if (text.equals("Rcon")){
+                                else if (text.equals("rcon") || text.equals("/rcon")){
                                     if (config.getList("allowed-users").contains(message.getFromId())) {
                                         if (config.getList("fast-commands").size() != 0) {
                                             manager.sendMessage(Messages.RCON_WITH_COMMANDS.getText(), message, Keyboards.commandsKeyboard());
