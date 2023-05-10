@@ -14,7 +14,7 @@ commands:
 
   # Быстрые команды
   # (Отображаются при вводе "Начать", "Rcon")
-  fast-commands: ["ver:", "status", "stop"]
+  fast-commands: ["ver", "status", "stop"]
 
   # Заблокированные команды
   blocked-commands: ["stop"]
