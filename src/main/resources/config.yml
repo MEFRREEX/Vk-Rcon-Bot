@@ -1,24 +1,20 @@
-groupId: 123 # ID группы вк
-token: "" # Токен группы ВК
-
-# Символ перед командой для отправки комманды. Например "/".
-# Оставьте пустым если не требуется.
-command-prefix: "/"
+vk:
+  groupId: 123 # Id группы ВК 
+  accessToken: "token" # Токен группы ВК
 
 rcon:
   host: "localhost" # Адрес RCON
   port: 19132 # Порт RCON
-  password: "5YzNmYjUyM" # Пароль RCON
+  password: "password" # Пароль RCON
 
-allowed-users:
-  - 1 # Цифровые ID
+commands:
+  # Символ перед командой для отправки комманды. Например '/'.
+  # Оставьте пустым если не требуется.
+  prefix: '/'
 
-# Быстрые команды, будут отображатся при вводе Rcon
-fast-commands:
-  - "ver"
-  - "status"
-  - "stop"
+  # Быстрые команды
+  # (Отображаются при вводе "Начать", "Rcon")
+  fast-commands: ["ver:", "status", "stop"]
 
-# Заблокированные команды
-blocked-commands:
-  - "stop"
+  # Заблокированные команды
+  blocked-commands: ["stop"]
