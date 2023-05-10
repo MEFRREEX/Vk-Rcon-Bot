@@ -13,4 +13,4 @@ A simple Rcon Bot for VK
 - `mvn clean package`
 
 ## Run
-`java -jar vkbot-1.0.jar`
+`java -jar VkRconBot-1.4.jar`
