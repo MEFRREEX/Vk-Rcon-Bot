@@ -9,8 +9,5 @@
         <module name="vkrconbot" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="VkRconBot" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
 </project>

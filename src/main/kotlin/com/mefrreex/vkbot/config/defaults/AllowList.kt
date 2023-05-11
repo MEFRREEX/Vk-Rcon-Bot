@@ -7,16 +7,11 @@ enum class AllowList(private val key: String) {
     ALLOWED_USERS("allowed-users");
 
     companion object {
-
-        private val CONFIG = Config("allow_list.yml")
-
-        fun getConfig(): Config {
-            return CONFIG
-        }
+        val config = Config("allow_list.yml")
     }
 
     private fun getValue(key: String): Any? {
-        return CONFIG.getList(key)
+        return config.getList(key)
     }
 
     @Suppress("UNCHECKED_CAST")

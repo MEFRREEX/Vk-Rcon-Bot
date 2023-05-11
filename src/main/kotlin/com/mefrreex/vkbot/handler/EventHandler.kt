@@ -28,9 +28,9 @@ class EventHandler(
 
 ) : GroupLongPollApi(client, actor, waitTime) {
 
-    val logger = Logger.getInstance()
+    val logger = Logger.instance
 
-    fun messageNewFix(groupId: Int, message: Message) {
+    fun messageNewFix(message: Message) {
 
         val text = message.text.lowercase()
 
@@ -134,7 +134,7 @@ class EventHandler(
     override fun parse(message: CallbackMessage): String? {
         if (message.type == Events.MESSAGE_NEW) {
             gson.fromJson<MessageFix>(message.getObject(), MessageFix::class.java).message?.let {
-                this.messageNewFix(message.groupId, it)
+                this.messageNewFix(it)
             }
             return "OK"
         }

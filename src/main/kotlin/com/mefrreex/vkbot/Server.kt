@@ -9,9 +9,9 @@ import com.vk.api.sdk.httpclient.HttpTransportClient
 
 class Server(val bootstrap: Bootstrap) {
 
-    private val config = Settings.getConfig()
-    private val groupId = Settings.GROUP_ID.int()
-    private val accessToken = Settings.ACCESS_TOKEN.string()
+    val config = Settings.config
+    val groupId = Settings.GROUP_ID.int()
+    val accessToken = Settings.ACCESS_TOKEN.string()
 
     fun start() {
 
@@ -29,17 +29,4 @@ class Server(val bootstrap: Bootstrap) {
         handler.run();
 
     }
-
-    fun getConfig(): Config {
-        return config
-    }
-
-    fun getGroupId(): Int {
-        return groupId
-    }
-
-    fun getAccessToken(): String {
-        return accessToken
-    }
-
 }

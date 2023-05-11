@@ -7,18 +7,15 @@ import kotlin.jvm.Throws
 import java.io.IOException
 import java.util.function.Consumer
 
-class Rcon {
+object Rcon {
 
-    companion object {
+    fun command(name: String, response: Consumer<String>) {
+        response.accept(command(name));
+    }
 
-        fun command(name: String, response: Consumer<String>) {
-            response.accept(command(name));
-        }
-
-        @Throws(IOException::class, AuthenticationException::class)
-        fun command(name: String): String {
-            val rcon = RconManager(Settings.RCON_HOST.string(), Settings.RCON_PORT.int(), Settings.RCON_PASSWORD.string().toByteArray())
-            return rcon.command(name.toByteArray(charset("UTF-8")));
-        }
+    @Throws(IOException::class, AuthenticationException::class)
+    fun command(name: String): String {
+        val rcon = RconManager(Settings.RCON_HOST.string(), Settings.RCON_PORT.int(), Settings.RCON_PASSWORD.string().toByteArray())
+        return rcon.command(name.toByteArray(charset("UTF-8")));
     }
 }

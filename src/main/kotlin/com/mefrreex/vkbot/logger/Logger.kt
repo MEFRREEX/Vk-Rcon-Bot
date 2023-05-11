@@ -29,22 +29,13 @@ class Logger {
         log(TextFormat.BLUE + "DEBUG" + TextFormat.RESET, message)
     }
 
-    private fun log(level: String, message: String) {
-        log(level, message, null)
-    }
-
-    private fun log(level: String, message: String, throwable: Throwable?) {
+    private fun log(level: String, message: String, throwable: Throwable? = null) {
         val date = DATE_FORMAT.format(Date())
         println("${TextFormat.CYAN}$date ${TextFormat.WHITE}[$level] $message")
         throwable?.printStackTrace()
     }
 
     companion object {
-
-        private val instance = Logger()
-
-        fun getInstance(): Logger {
-            return instance
-        }
+        val instance = Logger()
     }
 }

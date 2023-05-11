@@ -4,7 +4,7 @@ import com.mefrreex.vkbot.config.ConfigManager
 import com.mefrreex.vkbot.logger.Logger
 import java.io.File
 
-val logger = Logger.getInstance()
+val logger = Logger.instance
 val configManager = ConfigManager()
 
 var server: Server? = null
@@ -18,11 +18,11 @@ fun main() {
     val bootstrap = Bootstrap();
 
     val resources = listOf(File("config.yml"), File("allow_list.yml"), File("messages.yml"))
-    if (!resources.all { it.exists() }) {
-        logger.info("Saving resources.")
-        configManager.saveResource("allow_list.yml")
-        configManager.saveResource("messages.yml")
-        configManager.saveResource("config.yml")
+    resources.forEach {
+        if (!it.exists()) {
+            configManager.saveResource(it.name)
+            logger.info("Resource `${it.name}` saved.")
+        }
     }
 
     server = Server(bootstrap)

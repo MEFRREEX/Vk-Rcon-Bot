@@ -17,15 +17,11 @@ enum class Settings(private val key: String) {
 
     companion object {
 
-        private val CONFIG = Config("config.yml")
-
-        fun getConfig(): Config {
-            return CONFIG
-        }
+        val config = Config("config.yml")
     }
 
     private fun getValue(key: String): Any? {
-        return CONFIG.getValue(key)
+        return config.getValue(key)
     }
 
     fun string(): String {

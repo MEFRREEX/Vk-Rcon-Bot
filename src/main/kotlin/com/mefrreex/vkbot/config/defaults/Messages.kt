@@ -20,15 +20,10 @@ enum class Messages(private val key: String) {
     RESPONSE_NULL("response_null");
 
     companion object {
-
-        private val CONFIG = Config("messages.yml")
-
-        fun getConfig(): Config {
-            return CONFIG
-        }
+        val config = Config("messages.yml")
     }
 
     fun get(): String {
-        return CONFIG.getString(key)!!
+        return config.getString(key)!!
     }
 }

@@ -14,11 +14,11 @@ class ConfigManager {
 
         if (!file.exists()) {
             try {
-                val inputStream: InputStream = javaClass.getResourceAsStream(configPath)
+                val inputStream: InputStream? = javaClass.getResourceAsStream(configPath)
                 val outputStream: OutputStream = FileOutputStream(file)
                 val buffer = ByteArray(1024)
                 var bytesRead: Int
-                while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                while (inputStream!!.read(buffer).also { bytesRead = it } != -1) {
                     outputStream.write(buffer, 0, bytesRead)
                 }
                 inputStream.close()
