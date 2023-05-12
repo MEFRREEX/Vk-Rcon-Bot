@@ -16,7 +16,6 @@ enum class Settings(private val key: String) {
     BLOCKED_COMMANDS("commands.blocked-commands");
 
     companion object {
-
         val config = Config("config.yml")
     }
 

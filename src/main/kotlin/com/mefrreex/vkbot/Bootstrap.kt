@@ -7,7 +7,7 @@ import java.io.File
 val logger = Logger.instance
 val configManager = ConfigManager()
 
-var server: Server? = null
+lateinit var server: Server
 
 class Bootstrap {
 
@@ -26,7 +26,7 @@ fun main() {
     }
 
     server = Server(bootstrap)
-    server!!.start()
+    server.start()
 
     logger.info("Bot is started!")
 }
