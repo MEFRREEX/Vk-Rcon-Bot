@@ -6,7 +6,7 @@
 
     <artifactId>vkrconbot</artifactId>
     <groupId>com.mefrreex.vkbot</groupId>
-    <version>1.4</version>
+    <version>1.4.0.1</version>
     <packaging>jar</packaging>
 
     <name>VkRconBot</name>
