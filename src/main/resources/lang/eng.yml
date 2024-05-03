@@ -1,0 +1,14 @@
+# Generic messages
+generic-user-not-whitelisted: "You do not have permission to use RCON"
+generic-command-blocked: "This command is blocked"
+
+# Command messages
+command-userid-success: "Your ID: [0]"
+command-start-success: "Type a command or use the button below"
+
+# RCON Messages
+rcon-failed-to-connect: "Failed to connect to the server"
+rcon-failed-to-authenticate: "Failed to authenticate"
+rcon-command-sent: "Command sent.\nServer response: [0]"
+rcon-response-empty: "Command sent. Server didn't return a response"
+rcon-command-response-too-long: "Command sent. Server response is too long"

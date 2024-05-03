@@ -53,7 +53,7 @@ class MessageHandler(
                         }
 
                         if (bot.settings.blockedCommands.contains(commandName)) {
-                            bot.sendMessage(message.peerId, translationService.translate("command_blocked", command))
+                            bot.sendMessage(message.peerId, translationService.translate("generic-command-blocked", command))
                             bot.logger.warn("User ${message.peerId} tried to use the blocked command ${TextFormat.RED}/$command${TextFormat.RESET}.")
                             return
                         }
@@ -83,7 +83,7 @@ class MessageHandler(
                             } else {
                                 bot.sendMessage(message.peerId, translationService.translate("rcon-command-response-too-long"))
                             }
-                            bot.logger.info("Used ${TextFormat.YELLOW}/$command${TextFormat.RESET} command by user ${message.fromId}")
+                            bot.logger.info("User ${message.fromId} used the command ${TextFormat.YELLOW}/$command${TextFormat.RESET}")
                         }
                     }
                 }

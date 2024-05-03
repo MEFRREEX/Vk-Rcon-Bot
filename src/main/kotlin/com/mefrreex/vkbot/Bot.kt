@@ -12,10 +12,9 @@ import com.vk.api.sdk.httpclient.HttpTransportClient
 import com.vk.api.sdk.objects.messages.Keyboard
 import kotlin.random.Random
 
-class Bot(private val config: Config, groupId: Int, accessToken: String) {
+class Bot(config: Config, groupId: Int, accessToken: String) {
 
     private val allowList = ConfigHelper.getConfigNotNull(ConfigHelper.ALLOW_LIST)
-    private val messages = ConfigHelper.getConfigNotNull(ConfigHelper.MESSAGES)
 
     private val vkClient: VkApiClient
     private val groupActor: GroupActor

@@ -4,7 +4,7 @@ generic-command-blocked: "Данная команда заблокирована
 
 # Сообщения команд
 command-userid-success: "Ваш ID: [0]"
-command-start-success: "Введите команду или используйте кнопку ниже."
+command-start-success: "Введите команду или используйте кнопку ниже"
 
 # Сообщения RCON
 rcon-failed-to-connect: "Не удалось подключиться к серверу"
