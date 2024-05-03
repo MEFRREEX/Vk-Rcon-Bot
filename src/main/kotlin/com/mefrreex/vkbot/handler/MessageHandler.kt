@@ -1,7 +1,8 @@
 package com.mefrreex.vkbot.handler
 
 import com.mefrreex.vkbot.Bot
-import com.mefrreex.vkbot.rcon.Rcon
+import com.mefrreex.vkbot.rcon.RconClient
+import com.mefrreex.vkbot.rcon.exception.ConnectionException
 import com.mefrreex.vkbot.utils.Keyboards
 import com.mefrreex.vkbot.utils.TextFormat
 import com.vk.api.sdk.client.VkApiClient
@@ -10,8 +11,6 @@ import com.vk.api.sdk.events.Events
 import com.vk.api.sdk.events.longpoll.GroupLongPollApi
 import com.vk.api.sdk.objects.callback.messages.CallbackMessage
 import com.vk.api.sdk.objects.messages.Message
-import net.kronos.rkon.core.ex.AuthenticationException
-import java.io.IOException
 
 class MessageHandler(
     client: VkApiClient,
@@ -56,27 +55,32 @@ class MessageHandler(
                             return
                         }
 
+                        val rcon = RconClient(bot.settings.rconHost, bot.settings.rconPort)
+
                         try {
-                            Rcon.command(command, response = {
-                                if (it.length < 4000) {
-                                    bot.sendMessage(message.peerId, if (it.isNotBlank()) {
-                                        bot.getMessage("command_sent").format(it)
-                                    } else {
-                                        bot.getMessage("response_null")
-                                    })
+                            rcon.connect(bot.settings.rconPassword)
+                        } catch (e: Exception) {
+                            if (e is ConnectionException) {
+                                bot.sendMessage(message.peerId, bot.getMessage("failed_to_connect"))
+                                bot.logger.error("Unhandled exception when trying to connect to RCON:", e)
+                            } else {
+                                e.printStackTrace()
+                                bot.sendMessage(message.peerId, bot.getMessage("failed_to_authenticate"))
+                                bot.logger.error("Unhandled exception on RCON authentication attempt:", e)
+                            }
+                        }
+
+                        rcon.sendCommand(command).let {
+                            if (it.length < 4000) {
+                                bot.sendMessage(message.peerId, if (it.isNotBlank()) {
+                                    bot.getMessage("command_sent").format(it)
                                 } else {
-                                    bot.sendMessage(message.peerId, bot.getMessage("command_response_too_long"))
-                                }
-                                bot.logger.info("Used ${TextFormat.YELLOW}`$command`${TextFormat.RESET} command by user ${message.fromId}")
-                            })
-
-                        } catch (e: IOException) {
-                            bot.sendMessage(message.peerId, bot.getMessage("failed_to_connect"))
-                            bot.logger.error("Unhandled exception when trying to connect to RCON:", e)
-
-                        } catch (e: AuthenticationException) {
-                            bot.sendMessage(message.peerId, bot.getMessage("failed_to_authenticate"))
-                            bot.logger.error("Unhandled exception on RCON authentication attempt:", e)
+                                    bot.getMessage("response_null")
+                                })
+                            } else {
+                                bot.sendMessage(message.peerId, bot.getMessage("command_response_too_long"))
+                            }
+                            bot.logger.info("Used ${TextFormat.YELLOW}/$command${TextFormat.RESET} command by user ${message.fromId}")
                         }
                     }
                 }

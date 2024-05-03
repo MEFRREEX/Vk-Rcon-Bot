@@ -44,11 +44,3 @@ tasks.withType<Jar> {
 kotlin {
     jvmToolchain(17)
 }
-
-sourceSets {
-    main {
-        java {
-            srcDirs("src/main/kotlin")
-        }
-    }
-}
