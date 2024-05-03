@@ -1,16 +1,14 @@
 # Vk-Rcon-Bot
 A simple Rcon Bot for VK
 
-## Used libraries: 
-- [vk-java-sdk](https://github.com/VKCOM/vk-java-sdk) 
-- [snakeyaml](https://github.com/snakeyaml/snakeyaml) 
-- [rkon-core](https://github.com/kr5ch/rkon-core) 
+## 🎮 Run
+`java -jar VkRconBot-<Version>.jar`
 
-
-## Build JAR file
+## 🛠 Build JAR file
 - `git clone https://github.com/MEFRREEX/Vk-Rcon-Bot.git`
 - `cd Vk-Rcon-Bot`
-- `mvn clean package`
+- `gradle build`
 
-## Run
-`java -jar VkRconBot-1.4.jar`
+## 📄 Used libraries:
+- [Vk-Java-Sdk](https://github.com/VKCOM/vk-java-sdk)
+- [Configuration](https://github.com/MEFRREEX/Configuration) 
