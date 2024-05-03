@@ -8,7 +8,6 @@ object ConfigHelper {
 
     const val CONFIG = "config.yml"
     const val ALLOW_LIST = "allow_list.yml"
-    const val MESSAGES = "messages.yml"
 
     private val configs: MutableMap<String, Config> = mutableMapOf()
 
@@ -28,6 +27,7 @@ object ConfigHelper {
         val resourceStream = javaClass.classLoader.getResourceAsStream(target)
         val outputFile = File(output)
         if (resourceStream != null && (replace || !outputFile.exists())) {
+            outputFile.parentFile.mkdirs()
             outputFile.createNewFile()
             outputFile.outputStream().use { resourceStream.copyTo(it) }
         }

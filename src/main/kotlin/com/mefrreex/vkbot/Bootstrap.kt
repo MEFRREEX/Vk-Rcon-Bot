@@ -5,23 +5,23 @@ import com.mefrreex.vkbot.utils.ConfigHelper
 import java.io.File
 
 
-val logger = Logger.instance
+val logger = Logger()
 
 fun main() {
     logger.info("Starting the bot...")
 
-    val resources = listOf("config.yml", "allow_list.yml", "messages.yml")
+    val resources = listOf(ConfigHelper.CONFIG, ConfigHelper.ALLOW_LIST)
     resources.forEach {
         ConfigHelper.loadConfig(it)
         if (!File(it).exists()) {
             ConfigHelper.saveResource(it)
-            logger.info("Resource $it saved.")
+            logger.info("Resource $it saved")
         }
     }
 
     val config = ConfigHelper.getConfig(ConfigHelper.CONFIG)
     if (config == null) {
-        logger.error("Failed to start bot. File config.yml not found.")
+        logger.error("Failed to start bot. File config.yml not found")
         return
     }
 
@@ -32,7 +32,7 @@ fun main() {
             return
         }
 
-        Bot(config.nodes("vk.groupId").asInt(), token)
+        Bot(config, config.nodes("vk.groupId").asInt(), token)
     } catch (e: Exception) {
         logger.error("Failed to start the bot", e)
         return

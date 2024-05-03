@@ -3,6 +3,7 @@ package com.mefrreex.vkbot.handler
 import com.mefrreex.vkbot.Bot
 import com.mefrreex.vkbot.rcon.RconClient
 import com.mefrreex.vkbot.rcon.exception.ConnectionException
+import com.mefrreex.vkbot.translation.TranslationService
 import com.mefrreex.vkbot.utils.Keyboards
 import com.mefrreex.vkbot.utils.TextFormat
 import com.vk.api.sdk.client.VkApiClient
@@ -19,6 +20,8 @@ class MessageHandler(
     private val bot: Bot
 ) : GroupLongPollApi(client, actor, waitTime) {
 
+    private val translationService = TranslationService.getInstance()
+
     private fun onMessageNew(message: Message) {
         val text = message.text.lowercase()
 
@@ -26,10 +29,10 @@ class MessageHandler(
 
             text == "начать" || text == "start" || text == "rcon" -> {
                 if (!bot.isUserAllowed(message.peerId)) {
-                    bot.sendMessage(message.peerId, bot.getMessage("user_not_whitelisted"))
+                    bot.sendMessage(message.peerId, translationService.translate("generic-user-not-whitelisted"))
                     return
                 }
-                bot.sendMessage(message.peerId, bot.getMessage("start"), Keyboards.commandsKeyboard())
+                bot.sendMessage(message.peerId, translationService.translate("command-start-success"), Keyboards.commandsKeyboard())
             }
 
             text.startsWith(bot.settings.commandPrefix) -> {
@@ -40,7 +43,7 @@ class MessageHandler(
                 when(command) {
 
                     "getid" -> {
-                        bot.sendMessage(message.peerId, bot.getMessage("user_id").format(message.fromId))
+                        bot.sendMessage(message.peerId, translationService.translate("command-userid-success", message.fromId))
                     }
 
                     else -> {
@@ -50,8 +53,8 @@ class MessageHandler(
                         }
 
                         if (bot.settings.blockedCommands.contains(commandName)) {
-                            bot.sendMessage(message.peerId, bot.getMessage("command_blocked").format(command))
-                            bot.logger.warn("User ${message.peerId} tried to use the blocked command ${TextFormat.RED}`$command`${TextFormat.RESET}.")
+                            bot.sendMessage(message.peerId, translationService.translate("command_blocked", command))
+                            bot.logger.warn("User ${message.peerId} tried to use the blocked command ${TextFormat.RED}/$command${TextFormat.RESET}.")
                             return
                         }
 
@@ -61,24 +64,24 @@ class MessageHandler(
                             rcon.connect(bot.settings.rconPassword)
                         } catch (e: Exception) {
                             if (e is ConnectionException) {
-                                bot.sendMessage(message.peerId, bot.getMessage("failed_to_connect"))
+                                bot.sendMessage(message.peerId, translationService.translate("rcon-failed-to-connect"))
                                 bot.logger.error("Unhandled exception when trying to connect to RCON:", e)
                             } else {
                                 e.printStackTrace()
-                                bot.sendMessage(message.peerId, bot.getMessage("failed_to_authenticate"))
+                                bot.sendMessage(message.peerId, translationService.translate("rcon-failed-to-authenticate"))
                                 bot.logger.error("Unhandled exception on RCON authentication attempt:", e)
                             }
                         }
 
                         rcon.sendCommand(command).let {
-                            if (it.length < 4000) {
+                            if (it.length <= 4000) {
                                 bot.sendMessage(message.peerId, if (it.isNotBlank()) {
-                                    bot.getMessage("command_sent").format(it)
+                                    translationService.translate("rcon-command-sent", it)
                                 } else {
-                                    bot.getMessage("response_null")
+                                    translationService.translate("rcon-response-empty")
                                 })
                             } else {
-                                bot.sendMessage(message.peerId, bot.getMessage("command_response_too_long"))
+                                bot.sendMessage(message.peerId, translationService.translate("rcon-command-response-too-long"))
                             }
                             bot.logger.info("Used ${TextFormat.YELLOW}/$command${TextFormat.RESET} command by user ${message.fromId}")
                         }

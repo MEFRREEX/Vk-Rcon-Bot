@@ -34,8 +34,4 @@ class Logger {
         println("${TextFormat.CYAN}$date ${TextFormat.WHITE}[$level] $message")
         throwable?.printStackTrace()
     }
-
-    companion object {
-        val instance = Logger()
-    }
 }

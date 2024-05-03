@@ -1,0 +1,14 @@
+# Общие сообщения
+generic-user-not-whitelisted: "У вас нет разрешения на использование RCON"
+generic-command-blocked: "Данная команда заблокирована"
+
+# Сообщения команд
+command-userid-success: "Ваш ID: [0]"
+command-start-success: "Введите команду или используйте кнопку ниже."
+
+# Сообщения RCON
+rcon-failed-to-connect: "Не удалось подключиться к серверу"
+rcon-failed-to-authenticate: "Не удалось пройти аутентификацию"
+rcon-command-sent: "Команда отправлена.\nОтвет сервера: [0]"
+rcon-response-empty: "Команда отправлена. Сервер не вернул ответ"
+rcon-command-response-too-long: "Ответ сервера слишком длинный"

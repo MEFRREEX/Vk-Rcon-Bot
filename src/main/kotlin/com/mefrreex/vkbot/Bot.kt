@@ -1,7 +1,10 @@
 package com.mefrreex.vkbot
 
+import com.mefrreex.config.Config
 import com.mefrreex.vkbot.handler.MessageHandler
 import com.mefrreex.vkbot.logger.Logger
+import com.mefrreex.vkbot.translation.TranslationService
+import com.mefrreex.vkbot.translation.TranslationServiceImpl
 import com.mefrreex.vkbot.utils.ConfigHelper
 import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.GroupActor
@@ -9,16 +12,17 @@ import com.vk.api.sdk.httpclient.HttpTransportClient
 import com.vk.api.sdk.objects.messages.Keyboard
 import kotlin.random.Random
 
-class Bot(groupId: Int, accessToken: String) {
+class Bot(private val config: Config, groupId: Int, accessToken: String) {
 
     private val allowList = ConfigHelper.getConfigNotNull(ConfigHelper.ALLOW_LIST)
     private val messages = ConfigHelper.getConfigNotNull(ConfigHelper.MESSAGES)
 
-    val logger = Logger.instance
-    val settings = BotSettings()
+    private val vkClient: VkApiClient
+    private val groupActor: GroupActor
 
-    val vkClient: VkApiClient
-    val groupActor: GroupActor
+    val logger = Logger()
+    val settings = BotSettings(config)
+    val translationService: TranslationService
 
     init {
         instance = this
@@ -33,15 +37,13 @@ class Bot(groupId: Int, accessToken: String) {
             .messageNew(true)
             .execute()
 
+        translationService = TranslationServiceImpl(config)
+
         MessageHandler(vkClient, groupActor, 1, this).run()
     }
 
     fun isUserAllowed(userId: Int): Boolean {
         return userId in allowList.node("allowed-users").asList<Int>()
-    }
-
-    fun getMessage(key: String): String {
-        return messages.node(key).asString()
     }
 
     fun sendMessage(userId: Int, message: String, keyboard: Keyboard? = null) {
@@ -56,6 +58,10 @@ class Bot(groupId: Int, accessToken: String) {
     }
 
     companion object {
-        lateinit var instance: Bot
+        private lateinit var instance: Bot
+
+        fun getInstance(): Bot {
+            return instance
+        }
     }
 }
