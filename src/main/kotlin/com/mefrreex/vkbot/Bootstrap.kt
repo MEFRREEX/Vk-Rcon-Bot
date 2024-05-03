@@ -1,32 +1,42 @@
 package com.mefrreex.vkbot
 
-import com.mefrreex.vkbot.config.ConfigManager
 import com.mefrreex.vkbot.logger.Logger
+import com.mefrreex.vkbot.utils.ConfigHelper
 import java.io.File
 
+
 val logger = Logger.instance
-val configManager = ConfigManager()
-
-lateinit var server: Server
-
-class Bootstrap {
-
-}
 
 fun main() {
     logger.info("Starting the bot...")
-    val bootstrap = Bootstrap();
 
-    val resources = listOf(File("config.yml"), File("allow_list.yml"), File("messages.yml"))
+    val resources = listOf("config.yml", "allow_list.yml", "messages.yml")
     resources.forEach {
-        if (!it.exists()) {
-            configManager.saveResource(it.name)
-            logger.info("Resource `${it.name}` saved.")
+        ConfigHelper.loadConfig(it)
+        if (!File(it).exists()) {
+            ConfigHelper.saveResource(it)
+            logger.info("Resource $it saved.")
         }
     }
 
-    server = Server(bootstrap)
-    server.start()
+    val config = ConfigHelper.getConfig(ConfigHelper.CONFIG)
+    if (config == null) {
+        logger.error("Failed to start bot. File config.yml not found.")
+        return
+    }
+
+    try {
+        val token = config.nodes("vk.accessToken").asString()
+        if (token == "token") {
+            logger.warn("Specify a valid bot token in the vk.accessToken parameter")
+            return
+        }
+
+        Bot(config.node("vk.groupId").asInt(), token)
+    } catch (e: Exception) {
+        logger.error("Failed to start the bot", e)
+        return
+    }
 
     logger.info("Bot is started!")
 }

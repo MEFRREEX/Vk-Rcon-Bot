@@ -14,22 +14,23 @@ repositories {
     mavenLocal()
     maven("https://repo1.maven.org/maven2")
     maven("https://repo.maven.apache.org/maven2/")
+    maven("https://jitpack.io")
 }
 
 dependencies {
     api("com.vk.api:sdk:1.0.14")
-    api("org.yaml:snakeyaml:1.21")
+    api("com.github.MEFRREEX:configuration:main-SNAPSHOT")
 }
 
 tasks.build {
     dependsOn(tasks.shadowJar)
 }
 
-tasks.withType<JavaCompile>() {
+tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-tasks.withType<Javadoc>() {
+tasks.withType<Javadoc> {
     options.encoding = "UTF-8"
 }
 

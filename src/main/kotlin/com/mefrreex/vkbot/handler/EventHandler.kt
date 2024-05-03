@@ -1,9 +1,6 @@
 package com.mefrreex.vkbot.handler
 
-import com.mefrreex.vkbot.Server
-import com.mefrreex.vkbot.config.defaults.AllowList
-import com.mefrreex.vkbot.config.defaults.Messages
-import com.mefrreex.vkbot.config.defaults.Settings
+import com.mefrreex.vkbot.Bot
 import com.mefrreex.vkbot.logger.Logger
 import com.mefrreex.vkbot.objects.MessageFix
 import com.mefrreex.vkbot.rcon.Rcon
@@ -24,7 +21,7 @@ class EventHandler(
     private val client: VkApiClient,
     private val actor: GroupActor,
     private val waitTime: Int,
-    private val server: Server
+    private val bot: Bot
 
 ) : GroupLongPollApi(client, actor, waitTime) {
 
@@ -37,9 +34,9 @@ class EventHandler(
         when {
 
             text == "начать" || text == "start" || text == "rcon" -> {
-                if (!AllowList.ALLOWED_USERS.get().contains(message.fromId)) {
+                if (!bot.isUserAllowed(message.fromId)) {
                     client.messages().send(actor)
-                        .message(Messages.USER_NOT_WHITELISTED.get())
+                        .message(bot.getMessage("user_not_whitelisted"))
                         .keyboard(Keyboards.commandsKeyboard())
                         .peerId(message.peerId)
                         .randomId(Random.nextInt(10000))
@@ -47,23 +44,23 @@ class EventHandler(
                     return
                 }
                 client.messages().send(actor)
-                    .message(Messages.START.get())
+                    .message(bot.getMessage("start"))
                     .keyboard(Keyboards.commandsKeyboard())
                     .peerId(message.peerId)
                     .randomId(Random.nextInt(10000))
                     .execute()
             }
 
-            text.startsWith(Settings.COMMAND_PREFIX.string()) -> {
+            text.startsWith(bot.settings.commandPrefix) -> {
 
-                val command = text.substring(Settings.COMMAND_PREFIX.string().length, text.length)
+                val command = text.substring(bot.settings.commandPrefix.length, text.length)
                 val commandName = command.split("\\s+".toRegex())[0].removePrefix("/")
 
                 when(command) {
 
                     "getid" -> {
                         client.messages().send(actor)
-                            .message(Messages.USER_ID.get().format(message.fromId))
+                            .message(bot.getMessage("user_id").format(message.fromId))
                             .peerId(message.peerId)
                             .randomId(Random.nextInt(10000))
                             .execute()
@@ -71,13 +68,13 @@ class EventHandler(
 
                     else -> {
 
-                        if (!AllowList.ALLOWED_USERS.get().contains(message.fromId)) {
+                        if (!bot.isUserAllowed(message.fromId)) {
                             return
                         }
 
-                        if (Settings.BLOCKED_COMMANDS.list().contains(commandName)) {
+                        if (bot.settings.blockedCommands.contains(commandName)) {
                             client.messages().send(actor)
-                                .message(Messages.COMMAND_BLOCKED.get().format(command))
+                                .message(bot.getMessage("command_blocked").format(command))
                                 .peerId(message.peerId)
                                 .randomId(Random.nextInt(10000))
                                 .execute()
@@ -90,10 +87,10 @@ class EventHandler(
                                 if (it.length < 4000) {
                                     client.messages().send(actor)
                                         .message(
-                                            if (it != "") {
-                                                Messages.COMMAND_SENDED.get().format(it)
+                                            if (it.isNotBlank()) {
+                                                bot.getMessage("command_sended").format(it)
                                             } else {
-                                                Messages.RESPONSE_NULL.get()
+                                                bot.getMessage("response_null")
                                             }
                                         )
                                         .peerId(message.peerId)
@@ -111,7 +108,7 @@ class EventHandler(
 
                         } catch (e: IOException) {
                             client.messages().send(actor)
-                                .message(Messages.FAILED_TO_CONNECT.get())
+                                .message(bot.getMessage("failed_to_connect"))
                                 .peerId(message.peerId)
                                 .randomId(Random.nextInt(10000))
                                 .execute()
@@ -119,7 +116,7 @@ class EventHandler(
 
                         } catch (e: AuthenticationException) {
                             client.messages().send(actor)
-                                .message(Messages.FAILED_TO_AUTHENTICATE.get())
+                                .message(bot.getMessage("failed_to_authenticate"))
                                 .peerId(message.peerId)
                                 .randomId(Random.nextInt(10000))
                                 .execute()
@@ -133,7 +130,7 @@ class EventHandler(
 
     override fun parse(message: CallbackMessage): String? {
         if (message.type == Events.MESSAGE_NEW) {
-            gson.fromJson<MessageFix>(message.getObject(), MessageFix::class.java).message?.let {
+            gson.fromJson(message.getObject(), MessageFix::class.java).message?.let {
                 this.messageNewFix(it)
             }
             return "OK"
