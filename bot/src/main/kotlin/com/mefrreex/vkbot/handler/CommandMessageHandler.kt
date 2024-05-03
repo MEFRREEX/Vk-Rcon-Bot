@@ -1,7 +1,7 @@
 package com.mefrreex.vkbot.handler
 
 import com.mefrreex.vkbot.Bot
-import com.mefrreex.vkbot.command.CommandParser
+import com.mefrreex.vkbot.command.parser.CommandParser
 import com.mefrreex.vkbot.command.SlashCommand
 import com.mefrreex.vkbot.command.WordCommand
 import com.vk.api.sdk.client.VkApiClient

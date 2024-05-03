@@ -1,46 +1,42 @@
 plugins {
     `java-library`
-    `maven-publish`
-    kotlin("jvm") version "1.9.21"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "com.mefrreex.vkbot"
-description = "vkrconbot"
-version = "1.5.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
-
-repositories {
-    mavenLocal()
-    maven("https://repo1.maven.org/maven2")
-    maven("https://repo.maven.apache.org/maven2/")
-    maven("https://jitpack.io")
-}
-
-dependencies {
-    api("com.vk.api:sdk:1.0.14")
-    api("com.github.MEFRREEX:configuration:main-SNAPSHOT")
-}
 
 tasks.build {
     dependsOn(tasks.shadowJar)
 }
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
+allprojects {
+    group = "com.mefrreex.vkbot"
+    description = "vkrconbot"
+    version = "1.5.1"
 }
 
-tasks.withType<Javadoc> {
-    options.encoding = "UTF-8"
-}
+subprojects {
 
-tasks.withType<Jar> {
-    archiveFileName.set("Vk-Rcon-Bot-${project.version}.jar")
-    manifest {
-        attributes["Main-Class"] = "com.mefrreex.vkbot.BootstrapKt"
+    apply {
+        plugin("java-library")
     }
-}
 
-kotlin {
-    jvmToolchain(17)
+    repositories {
+        mavenLocal()
+        maven("https://repo1.maven.org/maven2")
+        maven("https://repo.maven.apache.org/maven2/")
+        maven("https://jitpack.io")
+    }
+
+    dependencies {
+        api("com.vk.api:sdk:1.0.14")
+    }
+
+    tasks.withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+
+    tasks.withType<Javadoc> {
+        options.encoding = "UTF-8"
+    }
 }

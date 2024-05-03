@@ -1,7 +1,5 @@
 package com.mefrreex.vkbot.command
 
-import com.vk.api.sdk.objects.messages.Message
-
 interface CommandService {
 
     fun getCommands(): Map<String, Command>

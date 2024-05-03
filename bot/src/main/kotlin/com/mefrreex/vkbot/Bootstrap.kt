@@ -4,7 +4,6 @@ import com.mefrreex.vkbot.logger.Logger
 import com.mefrreex.vkbot.utils.ConfigHelper
 import java.io.File
 
-
 val logger = Logger()
 
 fun main() {

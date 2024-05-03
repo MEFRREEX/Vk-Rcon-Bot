@@ -3,3 +3,6 @@ plugins {
 }
 
 rootProject.name = "Vk-Rcon-Bot"
+
+include("api")
+include("bot")

@@ -1,4 +1,6 @@
-package com.mefrreex.vkbot.command
+package com.mefrreex.vkbot.command.parser
+
+import com.mefrreex.vkbot.command.data.CommandData
 
 
 object CommandParser {
