@@ -1,7 +1,12 @@
 package com.mefrreex.vkbot
 
 import com.mefrreex.config.Config
-import com.mefrreex.vkbot.handler.MessageHandler
+import com.mefrreex.vkbot.command.CommandService
+import com.mefrreex.vkbot.command.CommandServiceImpl
+import com.mefrreex.vkbot.command.impl.GetIDCommand
+import com.mefrreex.vkbot.command.impl.StartCommand
+import com.mefrreex.vkbot.handler.CommandMessageHandler
+import com.mefrreex.vkbot.handler.DefaultMessageHandler
 import com.mefrreex.vkbot.logger.Logger
 import com.mefrreex.vkbot.translation.TranslationService
 import com.mefrreex.vkbot.translation.TranslationServiceImpl
@@ -21,7 +26,9 @@ class Bot(config: Config, groupId: Int, accessToken: String) {
 
     val logger = Logger()
     val settings = BotSettings(config)
+
     val translationService: TranslationService
+    val commandService: CommandService
 
     init {
         instance = this
@@ -37,8 +44,14 @@ class Bot(config: Config, groupId: Int, accessToken: String) {
             .execute()
 
         translationService = TranslationServiceImpl(config)
+        commandService = CommandServiceImpl()
+        commandService.register(
+            StartCommand(),
+            GetIDCommand()
+        )
 
-        MessageHandler(vkClient, groupActor, 1, this).run()
+        DefaultMessageHandler(vkClient, groupActor, 1, this).run()
+        CommandMessageHandler(vkClient, groupActor, 1, this).run()
     }
 
     fun isUserAllowed(userId: Int): Boolean {
