@@ -1,17 +1,20 @@
 package com.mefrreex.vkbot
 
-import com.mefrreex.config.Config
-import com.mefrreex.vkbot.handler.EventHandler
+import com.mefrreex.vkbot.handler.MessageHandler
+import com.mefrreex.vkbot.logger.Logger
 import com.mefrreex.vkbot.utils.ConfigHelper
 import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.GroupActor
 import com.vk.api.sdk.httpclient.HttpTransportClient
+import com.vk.api.sdk.objects.messages.Keyboard
+import kotlin.random.Random
 
 class Bot(groupId: Int, accessToken: String) {
 
     private val allowList = ConfigHelper.getConfigNotNull(ConfigHelper.ALLOW_LIST)
     private val messages = ConfigHelper.getConfigNotNull(ConfigHelper.MESSAGES)
 
+    val logger = Logger.instance
     val settings = BotSettings()
 
     val vkClient: VkApiClient
@@ -30,7 +33,7 @@ class Bot(groupId: Int, accessToken: String) {
             .messageNew(true)
             .execute()
 
-        EventHandler(vkClient, groupActor, 1, this).run()
+        MessageHandler(vkClient, groupActor, 1, this).run()
     }
 
     fun isUserAllowed(userId: Int): Boolean {
@@ -39,6 +42,17 @@ class Bot(groupId: Int, accessToken: String) {
 
     fun getMessage(key: String): String {
         return messages.node(key).asString()
+    }
+
+    fun sendMessage(userId: Int, message: String, keyboard: Keyboard? = null) {
+        vkClient.messages().send(groupActor)
+            .message(message)
+            .apply {
+                keyboard?.let { keyboard(it) }
+            }
+            .peerId(userId)
+            .randomId(Random.nextInt(10000))
+            .execute()
     }
 
     companion object {

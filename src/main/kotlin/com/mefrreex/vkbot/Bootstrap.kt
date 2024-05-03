@@ -32,7 +32,7 @@ fun main() {
             return
         }
 
-        Bot(config.node("vk.groupId").asInt(), token)
+        Bot(config.nodes("vk.groupId").asInt(), token)
     } catch (e: Exception) {
         logger.error("Failed to start the bot", e)
         return

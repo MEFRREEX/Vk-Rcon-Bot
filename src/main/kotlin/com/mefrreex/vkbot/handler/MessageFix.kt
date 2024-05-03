@@ -1,4 +1,4 @@
-package com.mefrreex.vkbot.objects
+package com.mefrreex.vkbot.handler
 
 import com.google.gson.annotations.SerializedName
 import com.vk.api.sdk.objects.messages.Message

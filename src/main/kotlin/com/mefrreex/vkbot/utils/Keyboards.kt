@@ -6,7 +6,6 @@ import java.util.*
 
 object Keyboards {
 
-    @Suppress("UNCHECKED_CAST")
     fun commandsKeyboard(): Keyboard {
         val bot = Bot.instance
         val keyboard = Keyboard()
