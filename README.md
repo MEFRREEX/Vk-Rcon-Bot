@@ -1,16 +1,18 @@
 # Vk-Rcon-Bot
-A simple Rcon Bot for VK
+Simple bot for VK to send commands to the server using RCON
 
-## Used libraries: 
+![example](https://i.imgur.com/DH8hsSV.png)
+
+## 📃 Used libraries: 
 - [vk-java-sdk](https://github.com/VKCOM/vk-java-sdk) 
 - [snakeyaml](https://github.com/snakeyaml/snakeyaml) 
 - [rkon-core](https://github.com/kr5ch/rkon-core) 
 
 
-## Build JAR file
+## 🛠 Build JAR file
 - `git clone https://github.com/MEFRREEX/Vk-Rcon-Bot.git`
 - `cd Vk-Rcon-Bot`
 - `mvn clean package`
 
-## Run
+## 🎮 Run
 `java -jar VkRconBot-1.4.jar`
