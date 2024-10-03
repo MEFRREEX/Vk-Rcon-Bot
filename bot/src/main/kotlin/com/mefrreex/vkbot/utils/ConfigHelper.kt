@@ -27,7 +27,6 @@ object ConfigHelper {
         val resourceStream = javaClass.classLoader.getResourceAsStream(target)
         val outputFile = File(output)
         if (resourceStream != null && (replace || !outputFile.exists())) {
-            outputFile.parentFile.mkdirs()
             outputFile.createNewFile()
             outputFile.outputStream().use { resourceStream.copyTo(it) }
         }
