@@ -11,11 +11,11 @@ fun main() {
 
     val resources = listOf(ConfigHelper.CONFIG, ConfigHelper.ALLOW_LIST)
     resources.forEach {
-        ConfigHelper.loadConfig(it)
         if (!File(it).exists()) {
             ConfigHelper.saveResource(it)
             logger.info("Resource $it saved")
         }
+        ConfigHelper.loadConfig(it)
     }
 
     val config = ConfigHelper.getConfig(ConfigHelper.CONFIG)
