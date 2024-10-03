@@ -15,7 +15,7 @@ A simple bot for sending commands to a Minecraft server via RCON through the VK 
 1. Download the latest release of the bot.
 2. Run the following command to start the bot:
 ```bash
-   java -jar VkRconBot-<Version>.jar
+java -jar VkRconBot-<Version>.jar
 ```
 
 ## ⚙️ Configuration
