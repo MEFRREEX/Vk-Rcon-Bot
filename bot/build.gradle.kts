@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.21"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 dependencies {
@@ -16,4 +17,8 @@ tasks.withType<Jar> {
 
 kotlin {
     jvmToolchain(17)
+}
+
+tasks.build {
+    dependsOn(tasks.shadowJar)
 }
