@@ -6,6 +6,10 @@ A simple bot for sending commands to a Minecraft server via RCON through the VK 
 - Sends RCON commands to a server directly from VK messages.
 - Easy setup and configuration.
 - Lightweight and simple to use.
+- **Multilingual support**: The bot supports multiple languages, with easy customization of all messages.
+- **Command prefix**: Ability to specify a custom prefix for commands.
+- **Quick commands**: Add predefined quick commands for frequent actions.
+- **Command blocking**: Option to block specific unwanted commands from being executed.
 
 ## 🎮 Running the Bot
 1. Download the latest release of the bot.
